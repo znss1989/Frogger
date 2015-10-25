@@ -13,7 +13,7 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-
+var funcGlobal = [];
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -68,6 +68,7 @@ var Engine = (function(global) {
         lastTime = Date.now();
         main();
     }
+    funcGlobal.push(init);
 
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
@@ -161,6 +162,18 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        // Reset the location of the player
+        player.col = 2;
+        player.x = player.col*101;
+        player.row = 5;
+        player.y = player.row*83 - 25;
+        // Provide guide information
+        ctx.font = '20pt Impact';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'black';
+        ctx.fillText("Use up/down/left/right to control the player.", canvas.width/2, 40);
+        ctx.strokeText("Use up/down/left/right to control the player.", canvas.width/2, 40);
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -172,7 +185,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png'
     ]);
     Resources.onReady(init);
 
