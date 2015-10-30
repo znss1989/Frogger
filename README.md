@@ -13,7 +13,7 @@ Front-End Web Developer Nanodegree.
 
 1. Use arrow keys on the keyboard to control the hero;
 2. Try moving the the river at the top of canvas;
-3. …Avoid all beatles on tracks, collisions would lead to reset of position;
+3. Avoid all beatles on tracks, collisions would lead to reset of position;
 4. Once you have arrived, you can choose to play again by clicking Ok;
 5. Quit by closing the browser window;
 
