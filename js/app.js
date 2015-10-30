@@ -1,3 +1,5 @@
+// Use strict mode to test the code, toggled off after testing
+'use strict';
 // Enemies our player must avoid
 var Enemy = function(rowIn, speedIn) {
     // Variables applied to each of our instances go here,
@@ -7,11 +9,14 @@ var Enemy = function(rowIn, speedIn) {
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 
-    // Set the initial location
-    this.x = -101; // Initialize to be off the left edge
-    this.row = rowIn;
-    this.y = this.row*83 - 25; // This may need adjusting later
+    // Set the size of object
+    var iconWidth = 101;
+    var iconHeight = 83;
 
+    // Set the initial location
+    this.x = -iconWidth; // Initialize to be off the left edge
+    this.row = rowIn;
+    this.y = this.row * iconHeight - 25; // The constant varies to adjust
     // Set the intial speed;
     this.speed = speedIn; // The unit would be px/s
 };
@@ -22,17 +27,23 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    
+    // Set global parameter
+    var canvasWidth = 505;
+    var deltaDistance = 101;
+    // Set the size of object
+    var iconWidth = 101;
+    var iconHeight = 83;
     // Update the location
-    if (this.x > 505) {
-        this.x = -101;
-    }
-    else {
-        this.x += this.speed*dt;
+    if (this.x > canvasWidth) {
+        this.x = -deltaDistance;
+    } else {
+        this.x += this.speed * dt;
     }
     // Uddate the region it belongs to;
-    this.col = Math.floor(this.x/101);
-    // Collision detect
-    if (this.row === player.row && this.col === player.col) {
+    this.col = Math.floor(this.x / deltaDistance);
+    // Collision detect following no gap algorithm
+    if (this.x < player.x + iconWidth && this.x + iconWidth > player.x &&  this.y < player.y + iconHeight && this.y +iconHeight > player.y) {
         funcGlobal[0]();
     }
 };
@@ -48,29 +59,28 @@ Enemy.prototype.render = function() {
 var Player = function() {
     this.sprite = 'images/char-cat-girl.png';
     this.col = 2;
-    this.x = this.col*101;
+    this.x = this.col * 101;
     this.row = 5;
-    this.y = this.row*83 - 25;
+    this.y = this.row * 83 - 25;
     this.dCol = 0,
-    this.dRow = 0;
+        this.dRow = 0;
 };
 
 Player.prototype.update = function(dt) {
     // Update the location
-    if (this.col+this.dCol >= 0 && this.col+this.dCol <= 4) {
-       this.col += this.dCol;
-       this.dCol = 0;
-       this.x = this.col*101;
-    }    
-    if (this.row+this.dRow >= 0 && this.row+this.dRow <= 5) {
+    if (this.col + this.dCol >= 0 && this.col + this.dCol <= 4) {
+        this.col += this.dCol;
+        this.dCol = 0;
+        this.x = this.col * 101;
+    }
+    if (this.row + this.dRow >= 0 && this.row + this.dRow <= 5) {
         this.row += this.dRow;
         this.dRow = 0;
-        this.y = this.row*83 - 25;  
+        this.y = this.row * 83 - 25;
     }
     // Arrive detection
     if (this.row === 0) {
         confirm("You have crossed the river!! Wanna play once more?");
-        // setTimeout(funcGlobal[0](), 2);
         funcGlobal[0]();
     }
 };
@@ -83,20 +93,16 @@ Player.prototype.handleInput = function(direction) {
     if (direction === 'left') {
         this.dCol = -1;
         this.dRow = 0;
-    }
-    else if (direction === 'right') {
+    } else if (direction === 'right') {
         this.dCol = 1;
         this.dRow = 0;
-    }
-    else if (direction === 'up') {
+    } else if (direction === 'up') {
         this.dCol = 0;
         this.dRow = -1;
-    }
-    else if (direction === 'down') {
+    } else if (direction === 'down') {
         this.dCol = 0;
         this.dRow = 1;
-    }
-    else {
+    } else {
         this.dCol = 0;
         this.dRow = 0;
     }
